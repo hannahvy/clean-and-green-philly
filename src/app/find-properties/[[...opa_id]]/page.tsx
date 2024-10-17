@@ -21,6 +21,27 @@ import { PiX } from 'react-icons/pi';
 
 export type BarClickOptions = 'filter' | 'download' | 'detail' | 'list';
 
+// Testing pop-up overlay
+const PopupOverlay: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null; // Don't render if the popup is not open
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-8 rounded shadow-lg max-w-sm w-full relative">
+        <button
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+          onClick={onClose}
+          aria-label="Close popup"
+        >
+          &times;
+        </button>
+        <h2 className="text-xl font-semibold mb-4">Popup Title</h2>
+        <p>Test HTML Overlay.</p>
+      </div>
+    </div>
+  );
+};
+
 type MapPageProps = {
   params: {
     opa_id: string;
@@ -28,6 +49,13 @@ type MapPageProps = {
 };
 
 const MapPage = ({ params }: MapPageProps) => {
+
+    // Existing states
+    const [isPopupOpen, setIsPopupOpen] = useState(false); // state for popup visibility
+
+    const openPopup = () => setIsPopupOpen(true); // open the popup
+    const closePopup = () => setIsPopupOpen(false); // Fclose the popup
+  
   const [featuresInView, setFeaturesInView] = useState<MapGeoJSONFeature[]>([]);
   const [featureCount, setFeatureCount] = useState<number>(0);
   const [currentView, setCurrentView] = useState<BarClickOptions>('detail');
